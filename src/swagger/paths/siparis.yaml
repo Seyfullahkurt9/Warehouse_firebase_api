@@ -1,0 +1,136 @@
+siparis:
+  get:
+    summary: Tüm siparişleri listele
+    tags: [Sipariş]
+    responses:
+      200:
+        description: Sipariş listesi başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/siparis.yaml#/Siparis'
+      500:
+        description: Sunucu hatası
+  post:
+    summary: Yeni sipariş ekle
+    tags: [Sipariş]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/siparis.yaml#/SiparisInput'
+    responses:
+      201:
+        description: Sipariş başarıyla oluşturuldu
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/siparis.yaml#/Siparis'
+      400:
+        description: Geçersiz veri
+      500:
+        description: Sunucu hatası
+
+siparis_id:
+  get:
+    summary: Sipariş detaylarını getir
+    tags: [Sipariş]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Sipariş ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Sipariş başarıyla alındı
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/siparis.yaml#/Siparis'
+      404:
+        description: Sipariş bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  put:
+    summary: Sipariş bilgilerini güncelle
+    tags: [Sipariş]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Sipariş ID'si
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/siparis.yaml#/SiparisInput'
+    responses:
+      200:
+        description: Sipariş başarıyla güncellendi
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/siparis.yaml#/Siparis'
+      400:
+        description: Geçersiz veri
+      404:
+        description: Sipariş bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  delete:
+    summary: Sipariş kaydını sil
+    tags: [Sipariş]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Sipariş ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Sipariş başarıyla silindi
+      404:
+        description: Sipariş bulunamadı
+      500:
+        description: Sunucu hatası
+
+siparis_search:
+  get:
+    summary: Sipariş ara
+    tags: [Sipariş]
+    parameters:
+      - name: term
+        in: path
+        required: true
+        description: Arama terimi
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Maksimum sonuç sayısı
+        schema:
+          type: integer
+          default: 10
+    responses:
+      200:
+        description: Arama sonuçları başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/siparis.yaml#/Siparis'
+      500:
+        description: Sunucu hatası

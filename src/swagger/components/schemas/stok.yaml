@@ -1,0 +1,79 @@
+StokInput:
+  type: object
+  required:
+    - urunKodu
+    - urunAdi
+    - birimFiyat
+    - stokMiktari
+  properties:
+    urunKodu: 
+      type: string 
+      description: Ürün kodu
+    urunAdi: 
+      type: string 
+      description: Ürün adı
+    kategori: 
+      type: string
+      description: Ürün kategorisi
+    birim: 
+      type: string
+      description: Ölçü birimi (adet, kg, lt vb.)
+    birimFiyat: 
+      type: number 
+      description: Birim fiyatı
+    stokMiktari: 
+      type: number 
+      description: Stok miktarı
+    kritikStokSeviyesi: 
+      type: number
+      description: Kritik stok seviyesi (uyarı için)
+    resimUrl: 
+      type: string
+      description: Ürün resmi URL
+    tedarikciId:
+      type: string
+      description: Tedarikçi referansı
+    rafYeri:
+      type: string
+      description: Depodaki raf/konum bilgisi
+    aktif:
+      type: boolean
+      description: Ürünün aktif olup olmadığını gösterir
+  example:
+    urunKodu: PR001
+    urunAdi: Widget A
+    kategori: Elektronik
+    birim: adet
+    birimFiyat: 19.99
+    stokMiktari: 500
+    kritikStokSeviyesi: 50
+    resimUrl: https://example.com/images/widget-a.jpg
+    tedarikciId: supplier123
+    rafYeri: A5-B3
+    aktif: true
+
+Stok:
+  allOf:
+    - $ref: '#/StokInput'
+    - type: object
+      properties:
+        id:
+          type: string
+          description: Stok ID'si
+        sonGuncellemeTarihi:
+          type: string
+          format: date-time
+          description: Son güncelleme tarihi
+        createdAt:
+          type: string
+          format: date-time
+          description: Oluşturulma tarihi
+        updatedAt:
+          type: string
+          format: date-time
+          description: Son güncelleme tarihi
+      example:
+        id: stok123
+        sonGuncellemeTarihi: 2023-06-15T10:30:00Z
+        createdAt: 2023-01-15T09:00:00Z
+        updatedAt: 2023-06-15T10:30:00Z

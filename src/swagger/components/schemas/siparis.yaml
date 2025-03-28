@@ -1,0 +1,112 @@
+SiparisInput:
+  type: object
+  required:
+    - siparisNo
+    - firmaId
+    - siparisTarihi
+    - urunler
+    - toplamTutar
+  properties:
+    siparisNo: 
+      type: string 
+      description: Sipariş numarası
+    firmaId: 
+      type: string 
+      description: Müşteri firma referansı
+    siparisTarihi: 
+      type: string 
+      format: date
+      description: Sipariş tarihi
+    teslimatTarihi: 
+      type: string
+      format: date
+      description: Teslimat tarihi
+    durum: 
+      type: string 
+      enum: ['Beklemede', 'Hazırlanıyor', 'Kargoda', 'Teslim Edildi', 'İptal']
+      default: Beklemede
+      description: Sipariş durumu
+    urunler: 
+      type: array
+      items:
+        type: object
+        properties:
+          urunId:
+            type: string
+          miktar:
+            type: number
+          birimFiyat:
+            type: number
+          toplam:
+            type: number
+      description: Sipariş edilen ürünler
+    toplamTutar: 
+      type: number 
+      description: Toplam sipariş tutarı
+    odemeDurumu:
+      type: string
+      enum: ['Ödenmedi', 'Kısmi Ödendi', 'Ödendi']
+      default: Ödenmedi
+      description: Ödeme durumu
+    odemeYontemi:
+      type: string
+      enum: ['Nakit', 'Kredi Kartı', 'Banka Havalesi', 'Çek']
+      description: Ödeme yöntemi
+    faturaKesildi:
+      type: boolean
+      default: false
+      description: Fatura kesilip kesilmediği
+    notlar:
+      type: string
+      description: Sipariş ile ilgili notlar
+    kargoBilgisi:
+      type: object
+      properties:
+        kargoFirmasi:
+          type: string
+        takipNumarasi:
+          type: string
+  example:
+    siparisNo: ORD-2023-001
+    firmaId: firma123
+    siparisTarihi: 2023-06-15
+    teslimatTarihi: 2023-06-20
+    durum: Hazırlanıyor
+    urunler:
+      - urunId: stok123
+        miktar: 5
+        birimFiyat: 19.99
+        toplam: 99.95
+      - urunId: stok456
+        miktar: 2
+        birimFiyat: 29.99
+        toplam: 59.98
+    toplamTutar: 159.93
+    odemeDurumu: Kısmi Ödendi
+    odemeYontemi: Banka Havalesi
+    faturaKesildi: false
+    notlar: Teslimat saati 10:00-16:00 arası olmalı
+    kargoBilgisi:
+      kargoFirmasi: Hızlı Kargo
+      takipNumarasi: TN12345678
+
+Siparis:
+  allOf:
+    - $ref: '#/SiparisInput'
+    - type: object
+      properties:
+        id:
+          type: string
+          description: Sipariş ID'si
+        createdAt:
+          type: string
+          format: date-time
+          description: Oluşturulma tarihi
+        updatedAt:
+          type: string
+          format: date-time
+          description: Son güncelleme tarihi
+      example:
+        id: siparis123
+        createdAt: 2023-06-15T09:30:00Z
+        updatedAt: 2023-06-15T14:45:00Z

@@ -1,0 +1,136 @@
+tedarikci:
+  get:
+    summary: Tüm tedarikçileri listele
+    tags: [Tedarikçi]
+    responses:
+      200:
+        description: Tedarikçi listesi başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/tedarikci.yaml#/Tedarikci'
+      500:
+        description: Sunucu hatası
+  post:
+    summary: Yeni tedarikçi ekle
+    tags: [Tedarikçi]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/tedarikci.yaml#/TedarikciInput'
+    responses:
+      201:
+        description: Tedarikçi başarıyla oluşturuldu
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/tedarikci.yaml#/Tedarikci'
+      400:
+        description: Geçersiz veri
+      500:
+        description: Sunucu hatası
+
+tedarikci_id:
+  get:
+    summary: Tedarikçi detaylarını getir
+    tags: [Tedarikçi]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Tedarikçi ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Tedarikçi başarıyla alındı
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/tedarikci.yaml#/Tedarikci'
+      404:
+        description: Tedarikçi bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  put:
+    summary: Tedarikçi bilgilerini güncelle
+    tags: [Tedarikçi]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Tedarikçi ID'si
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/tedarikci.yaml#/TedarikciInput'
+    responses:
+      200:
+        description: Tedarikçi başarıyla güncellendi
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/tedarikci.yaml#/Tedarikci'
+      400:
+        description: Geçersiz veri
+      404:
+        description: Tedarikçi bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  delete:
+    summary: Tedarikçi kaydını sil
+    tags: [Tedarikçi]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Tedarikçi ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Tedarikçi başarıyla silindi
+      404:
+        description: Tedarikçi bulunamadı
+      500:
+        description: Sunucu hatası
+
+tedarikci_search:
+  get:
+    summary: Tedarikçi ara
+    tags: [Tedarikçi]
+    parameters:
+      - name: term
+        in: path
+        required: true
+        description: Arama terimi
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Maksimum sonuç sayısı
+        schema:
+          type: integer
+          default: 10
+    responses:
+      200:
+        description: Arama sonuçları başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/tedarikci.yaml#/Tedarikci'
+      500:
+        description: Sunucu hatası

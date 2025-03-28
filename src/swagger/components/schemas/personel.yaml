@@ -1,0 +1,94 @@
+PersonelInput:
+  type: object
+  required:
+    - ad
+    - soyad
+    - tcKimlik
+  properties:
+    ad:
+      type: string
+      description: Personelin adı
+    soyad:
+      type: string
+      description: Personelin soyadı
+    tcKimlik:
+      type: string
+      description: TC Kimlik numarası
+    telefon:
+      type: string
+      description: Telefon numarası
+    email:
+      type: string
+      format: email
+      description: E-posta adresi
+    departman:
+      type: string
+      description: Çalıştığı departman
+    pozisyon:
+      type: string
+      description: Görevi/pozisyonu
+    maas:
+      type: number
+      description: Maaş bilgisi
+    iseBaslamaTarihi:
+      type: string
+      format: date
+      description: İşe başlama tarihi
+    aktif:
+      type: boolean
+      description: Personelin aktif olup olmadığı
+    rolId:
+      type: string
+      description: Personelin rol ID'si
+  example:
+    ad: Ahmet
+    soyad: Yılmaz
+    tcKimlik: 12345678901
+    telefon: +90 555 123 45 67
+    email: ahmet.yilmaz@example.com
+    departman: Satış
+    pozisyon: Satış Uzmanı
+    maas: 10000
+    iseBaslamaTarihi: 2023-01-15
+    aktif: true
+    rolId: abc123
+
+Personel:
+  allOf:
+    - $ref: '#/PersonelInput'
+    - type: object
+      properties:
+        id:
+          type: string
+          description: Personel ID
+        izinler:
+          type: array
+          items:
+            type: object
+            properties:
+              baslangic:
+                type: string
+                format: date
+              bitis:
+                type: string
+                format: date
+              tur:
+                type: string
+                enum: [Yıllık, Hastalık, Ücretsiz, İdari]
+          description: İzin kayıtları
+        createdAt:
+          type: string
+          format: date-time
+          description: Oluşturulma tarihi
+        updatedAt:
+          type: string
+          format: date-time
+          description: Son güncelleme tarihi
+      example:
+        id: def456ghi789
+        izinler:
+          - baslangic: 2023-07-15
+            bitis: 2023-07-30
+            tur: Yıllık
+        createdAt: 2023-01-10T09:00:00Z
+        updatedAt: 2023-06-01T14:30:00Z

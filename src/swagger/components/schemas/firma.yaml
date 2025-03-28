@@ -1,0 +1,57 @@
+FirmaInput:
+  type: object
+  required:
+    - firmaAdi
+    - vergiNo
+  properties:
+    firmaAdi:
+      type: string
+      description: Firma adı
+    vergiNo:
+      type: string
+      description: Vergi numarası
+    adres:
+      type: string
+      description: Firma adresi
+    telefon:
+      type: string
+      description: Telefon numarası
+    email:
+      type: string
+      format: email
+      description: E-posta adresi
+    yetkiliKisi:
+      type: string
+      description: Yetkili kişi
+    aktif:
+      type: boolean
+      description: Firma aktif mi?
+  example:
+    firmaAdi: Örnek Firma Ltd. Şti.
+    vergiNo: 1234567890
+    adres: İstanbul, Türkiye
+    telefon: +90 212 123 45 67
+    email: info@ornekfirma.com
+    yetkiliKisi: Ahmet Yılmaz
+    aktif: true
+
+Firma:
+  allOf:
+    - $ref: '#/FirmaInput'
+    - type: object
+      properties:
+        id:
+          type: string
+          description: Firma ID'si
+        createdAt:
+          type: string
+          format: date-time
+          description: Oluşturulma tarihi
+        updatedAt:
+          type: string
+          format: date-time
+          description: Son güncelleme tarihi
+      example:
+        id: abc123def456
+        createdAt: 2023-05-15T10:30:00Z
+        updatedAt: 2023-05-15T10:30:00Z

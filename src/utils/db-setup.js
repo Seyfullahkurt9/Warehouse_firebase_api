@@ -1,7 +1,7 @@
 const { db } = require('../config/firebase');
 const models = require('../models/models');
 
-// Check if collection exists in Firebase
+// Check if collection exists AND has documents in Firebase
 async function collectionExists(collectionName) {
   if (!db) {
     console.error('Firebase database not initialized');
@@ -9,12 +9,12 @@ async function collectionExists(collectionName) {
   }
   
   try {
+    // Get a snapshot of the collection with a limit of 1 document
     const snapshot = await db.collection(collectionName).limit(1).get();
-    return true; // If no error, collection exists (even if empty)
+    
+    // A collection "exists" only if it has at least one document
+    return !snapshot.empty;
   } catch (error) {
-    if (error.code === 5) { // NOT_FOUND error code
-      return false;
-    }
     console.error(`Error checking collection ${collectionName}:`, error);
     return false;
   }
@@ -117,9 +117,9 @@ async function setupDatabase() {
       const exists = await collectionExists(modelName);
       
       if (exists) {
-        console.log(`✅ Collection '${modelName}' already exists in Firebase`);
+        console.log(`✅ Collection '${modelName}' already exists in Firebase and has documents`);
       } else {
-        console.log(`⚠️ Collection '${modelName}' does not exist in Firebase. Creating...`);
+        console.log(`⚠️ Collection '${modelName}' is empty or does not exist. Creating sample data...`);
         
         // Create sample data to initialize the collection
         await createSampleData(modelName, model);
@@ -132,8 +132,89 @@ async function setupDatabase() {
   }
 }
 
+// Force the creation of a collection with sample data, even if it exists
+async function forceInitCollection(collectionName) {
+  if (!db) {
+    console.error('Firebase database not initialized');
+    return;
+  }
+  
+  try {
+    const model = models[collectionName];
+    if (!model) {
+      console.error(`Model for collection '${collectionName}' not found`);
+      return;
+    }
+    
+    console.log(`Initializing collection '${collectionName}' with sample data...`);
+    await createSampleData(collectionName, model);
+    console.log(`✅ Collection '${collectionName}' initialized successfully`);
+  } catch (error) {
+    console.error(`Error initializing collection '${collectionName}':`, error);
+  }
+}
+
+// Reset all collections by deleting all documents and re-creating sample data
+async function resetAllCollections() {
+  if (!db) {
+    console.error('Firebase database not initialized');
+    return;
+  }
+  
+  try {
+    console.log('Starting database reset...');
+    
+    for (const [modelName, model] of Object.entries(models)) {
+      console.log(`Resetting collection '${modelName}'...`);
+      
+      // Get all documents in the collection
+      const snapshot = await db.collection(modelName).get();
+      
+      // Delete all documents in batches of 500 (Firestore batch limit)
+      const batchSize = 500;
+      const batches = [];
+      let batch = db.batch();
+      let operationCount = 0;
+      
+      snapshot.forEach(doc => {
+        batch.delete(doc.ref);
+        operationCount++;
+        
+        if (operationCount >= batchSize) {
+          batches.push(batch.commit());
+          batch = db.batch();
+          operationCount = 0;
+        }
+      });
+      
+      // Commit any remaining operations
+      if (operationCount > 0) {
+        batches.push(batch.commit());
+      }
+      
+      // Wait for all batches to complete
+      if (batches.length > 0) {
+        await Promise.all(batches);
+        console.log(`Deleted all documents in '${modelName}'`);
+      } else {
+        console.log(`No documents to delete in '${modelName}'`);
+      }
+      
+      // Create sample data
+      await createSampleData(modelName, model);
+      console.log(`✅ Collection '${modelName}' reset successfully`);
+    }
+    
+    console.log('✅ Database reset completed successfully');
+  } catch (error) {
+    console.error('Error resetting database:', error);
+  }
+}
+
 module.exports = {
   setupDatabase,
   collectionExists,
-  createSampleData
+  createSampleData,
+  forceInitCollection,
+  resetAllCollections
 };

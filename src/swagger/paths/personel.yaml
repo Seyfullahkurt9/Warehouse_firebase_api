@@ -1,0 +1,136 @@
+personel:
+  get:
+    summary: Tüm personeli listele
+    tags: [Personel]
+    responses:
+      200:
+        description: Personel listesi başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/personel.yaml#/Personel'
+      500:
+        description: Sunucu hatası
+  post:
+    summary: Yeni personel ekle
+    tags: [Personel]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/personel.yaml#/PersonelInput'
+    responses:
+      201:
+        description: Personel başarıyla oluşturuldu
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/personel.yaml#/Personel'
+      400:
+        description: Geçersiz veri
+      500:
+        description: Sunucu hatası
+
+personel_id:
+  get:
+    summary: Personel detaylarını getir
+    tags: [Personel]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Personel ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Personel başarıyla alındı
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/personel.yaml#/Personel'
+      404:
+        description: Personel bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  put:
+    summary: Personel bilgilerini güncelle
+    tags: [Personel]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Personel ID'si
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/personel.yaml#/PersonelInput'
+    responses:
+      200:
+        description: Personel başarıyla güncellendi
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/personel.yaml#/Personel'
+      400:
+        description: Geçersiz veri
+      404:
+        description: Personel bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  delete:
+    summary: Personel kaydını sil
+    tags: [Personel]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Personel ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Personel başarıyla silindi
+      404:
+        description: Personel bulunamadı
+      500:
+        description: Sunucu hatası
+
+personel_search:
+  get:
+    summary: Personel ara
+    tags: [Personel]
+    parameters:
+      - name: term
+        in: path
+        required: true
+        description: Arama terimi
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Maksimum sonuç sayısı
+        schema:
+          type: integer
+          default: 10
+    responses:
+      200:
+        description: Arama sonuçları başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/personel.yaml#/Personel'
+      500:
+        description: Sunucu hatası

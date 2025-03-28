@@ -1,0 +1,136 @@
+stok:
+  get:
+    summary: Tüm stokları listele
+    tags: [Stok]
+    responses:
+      200:
+        description: Stok listesi başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/stok.yaml#/Stok'
+      500:
+        description: Sunucu hatası
+  post:
+    summary: Yeni ürün ekle
+    tags: [Stok]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/stok.yaml#/StokInput'
+    responses:
+      201:
+        description: Ürün başarıyla oluşturuldu
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/stok.yaml#/Stok'
+      400:
+        description: Geçersiz veri
+      500:
+        description: Sunucu hatası
+
+stok_id:
+  get:
+    summary: Stok detaylarını getir
+    tags: [Stok]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Stok ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Stok başarıyla alındı
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/stok.yaml#/Stok'
+      404:
+        description: Stok bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  put:
+    summary: Stok bilgilerini güncelle
+    tags: [Stok]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Stok ID'si
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/stok.yaml#/StokInput'
+    responses:
+      200:
+        description: Stok başarıyla güncellendi
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/stok.yaml#/Stok'
+      400:
+        description: Geçersiz veri
+      404:
+        description: Stok bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  delete:
+    summary: Stok kaydını sil
+    tags: [Stok]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Stok ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Stok başarıyla silindi
+      404:
+        description: Stok bulunamadı
+      500:
+        description: Sunucu hatası
+
+stok_search:
+  get:
+    summary: Stok ara
+    tags: [Stok]
+    parameters:
+      - name: term
+        in: path
+        required: true
+        description: Arama terimi
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Maksimum sonuç sayısı
+        schema:
+          type: integer
+          default: 10
+    responses:
+      200:
+        description: Arama sonuçları başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/stok.yaml#/Stok'
+      500:
+        description: Sunucu hatası

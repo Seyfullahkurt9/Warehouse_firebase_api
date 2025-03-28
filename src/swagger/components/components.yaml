@@ -1,0 +1,31 @@
+components:
+  schemas:
+    # Firma schemas
+    Firma:
+      $ref: './schemas/firma.yaml#/Firma'
+    FirmaInput:
+      $ref: './schemas/firma.yaml#/FirmaInput'
+      
+    # Personel schemas
+    Personel:
+      $ref: './schemas/personel.yaml#/Personel'
+    PersonelInput:
+      $ref: './schemas/personel.yaml#/PersonelInput'
+      
+    # Stok schemas  
+    Stok:
+      $ref: './schemas/stok.yaml#/Stok'
+    StokInput:
+      $ref: './schemas/stok.yaml#/StokInput'
+      
+    # Siparis schemas
+    Siparis:
+      $ref: './schemas/siparis.yaml#/Siparis'
+    SiparisInput:
+      $ref: './schemas/siparis.yaml#/SiparisInput'
+      
+    # Tedarikci schemas
+    Tedarikci:
+      $ref: './schemas/tedarikci.yaml#/Tedarikci'
+    TedarikciInput:
+      $ref: './schemas/tedarikci.yaml#/TedarikciInput'

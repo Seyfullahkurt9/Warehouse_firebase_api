@@ -1,0 +1,76 @@
+TedarikciInput:
+  type: object
+  required:
+    - firmaAdi
+    - vergiNo
+  properties:
+    firmaAdi: 
+      type: string 
+      description: Tedarikçi firma adı
+    vergiNo: 
+      type: string 
+      description: Vergi numarası
+    adres: 
+      type: string
+      description: Firma adresi
+    telefon: 
+      type: string
+      description: Telefon numarası 
+    email: 
+      type: string
+      description: E-posta adresi
+    yetkiliKisi: 
+      type: string
+      description: Yetkili kişi adı
+    urunKategorileri:
+      type: array
+      items:
+        type: string
+      description: Sağladığı ürün kategorileri
+    teslimatSuresi:
+      type: number
+      description: Ortalama teslimat süresi (gün)
+    notlar:
+      type: string
+      description: Tedarikçi hakkında notlar
+    aktif:
+      type: boolean
+      default: true
+      description: Tedarikçinin aktif olup olmadığını gösterir
+  example:
+    firmaAdi: ABC Tedarik A.Ş.
+    vergiNo: 9876543210
+    adres: Ankara, Türkiye
+    telefon: +90 312 456 78 90
+    email: info@abctedarik.com
+    yetkiliKisi: Mehmet Demir
+    urunKategorileri: ["Elektronik", "Bilgisayar", "Ofis Malzemeleri"]
+    teslimatSuresi: 3
+    notlar: Perşembe günleri teslimat yapılmamaktadır
+    aktif: true
+
+Tedarikci:
+  allOf:
+    - $ref: '#/TedarikciInput'
+    - type: object
+      properties:
+        id:
+          type: string
+          description: Tedarikçi ID'si
+        sonSiparisTarihi:
+          type: string
+          format: date
+          description: Son sipariş tarihi
+        createdAt:
+          type: string
+          format: date-time
+          description: Oluşturulma tarihi
+        updatedAt:
+          type: string
+          format: date-time
+          description: Son güncelleme tarihi
+      example:
+        id: tedarikci123
+        sonSiparisTarihi: 2023-06-01
+        createdAt: 2023-01-15T09:00:00Z
+        updatedAt: 2023-06-10T11:30:00Z

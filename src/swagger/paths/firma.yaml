@@ -1,0 +1,136 @@
+firma:
+  get:
+    summary: Tüm firmaları listele
+    tags: [Firma]
+    responses:
+      200:
+        description: Firma listesi başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/firma.yaml#/Firma'
+      500:
+        description: Sunucu hatası
+  post:
+    summary: Yeni firma ekle
+    tags: [Firma]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/firma.yaml#/FirmaInput'
+    responses:
+      201:
+        description: Firma başarıyla oluşturuldu
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/firma.yaml#/Firma'
+      400:
+        description: Geçersiz veri
+      500:
+        description: Sunucu hatası
+
+firma_id:
+  get:
+    summary: Firma detaylarını getir
+    tags: [Firma]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Firma ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Firma başarıyla alındı
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/firma.yaml#/Firma'
+      404:
+        description: Firma bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  put:
+    summary: Firma bilgilerini güncelle
+    tags: [Firma]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Firma ID'si
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/firma.yaml#/FirmaInput'
+    responses:
+      200:
+        description: Firma başarıyla güncellendi
+        content:
+          application/json:
+            schema:
+              $ref: '../components/schemas/firma.yaml#/Firma'
+      400:
+        description: Geçersiz veri
+      404:
+        description: Firma bulunamadı
+      500:
+        description: Sunucu hatası
+  
+  delete:
+    summary: Firma kaydını sil
+    tags: [Firma]
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Firma ID'si
+        schema:
+          type: string
+    responses:
+      200:
+        description: Firma başarıyla silindi
+      404:
+        description: Firma bulunamadı
+      500:
+        description: Sunucu hatası
+
+firma_search:
+  get:
+    summary: Firma ara
+    tags: [Firma]
+    parameters:
+      - name: term
+        in: path
+        required: true
+        description: Arama terimi
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Maksimum sonuç sayısı
+        schema:
+          type: integer
+          default: 10
+    responses:
+      200:
+        description: Arama sonuçları başarıyla alındı
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../components/schemas/firma.yaml#/Firma'
+      500:
+        description: Sunucu hatası

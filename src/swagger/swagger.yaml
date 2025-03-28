@@ -6,7 +6,23 @@ info:
 servers:
   - url: /api
     description: API ana URL'i
+
+# Tags for API categorization
+tags:
+  - name: Firma
+    description: Firma (müşteri ve tedarikçi) işlemleri
+  - name: Personel
+    description: Personel yönetimi işlemleri
+  - name: Stok
+    description: Stok ve ürün yönetimi işlemleri
+  - name: Sipariş
+    description: Sipariş ve sevkiyat işlemleri
+  - name: Tedarikçi
+    description: Tedarikçi firma işlemleri
+
+# Define all paths directly instead of using references
 paths:
+  # Firma endpoints
   /firma:
     get:
       summary: Tüm firmaları listele
@@ -65,7 +81,6 @@ paths:
           description: Firma bulunamadı
         500:
           description: Sunucu hatası
-    
     put:
       summary: Firma bilgilerini güncelle
       tags: [Firma]
@@ -95,7 +110,6 @@ paths:
           description: Firma bulunamadı
         500:
           description: Sunucu hatası
-    
     delete:
       summary: Firma kaydını sil
       tags: [Firma]
@@ -143,9 +157,205 @@ paths:
                   $ref: '#/components/schemas/Firma'
         500:
           description: Sunucu hatası
+  
+  # Personel endpoints
+  /personel:
+    get:
+      summary: Tüm personeli listele
+      tags: [Personel]
+      responses:
+        200:
+          description: Personel listesi başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Personel'
+        500:
+          description: Sunucu hatası
+    post:
+      summary: Yeni personel ekle
+      tags: [Personel]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonelInput'
+      responses:
+        201:
+          description: Personel başarıyla oluşturuldu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Personel'
+        400:
+          description: Geçersiz veri
+        500:
+          description: Sunucu hatası
 
+  /personel/{id}:
+    get:
+      summary: Personel detaylarını getir
+      tags: [Personel]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Personel ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Personel başarıyla alındı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Personel'
+        404:
+          description: Personel bulunamadı
+        500:
+          description: Sunucu hatası
+    put:
+      summary: Personel bilgilerini güncelle
+      tags: [Personel]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Personel ID'si
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonelInput'
+      responses:
+        200:
+          description: Personel başarıyla güncellendi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Personel'
+        400:
+          description: Geçersiz veri
+        404:
+          description: Personel bulunamadı
+        500:
+          description: Sunucu hatası
+    delete:
+      summary: Personel kaydını sil
+      tags: [Personel]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Personel ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Personel başarıyla silindi
+        404:
+          description: Personel bulunamadı
+        500:
+          description: Sunucu hatası
+
+  /personel/search/{term}:
+    get:
+      summary: Personel ara
+      tags: [Personel]
+      parameters:
+        - name: term
+          in: path
+          required: true
+          description: Arama terimi
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Maksimum sonuç sayısı
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Arama sonuçları başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Personel'
+        500:
+          description: Sunucu hatası
+          
+  # Add similar patterns for stok, siparis, and tedarikci
+  # Add minimal stok endpoints
+  /stok:
+    get:
+      summary: Tüm stokları listele
+      tags: [Stok]
+      responses:
+        200:
+          description: Stok listesi başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Stok'
+    post:
+      summary: Yeni ürün ekle
+      tags: [Stok]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StokInput'
+      responses:
+        201:
+          description: Ürün başarıyla eklendi
+          
+  # Add minimal siparis endpoints      
+  /siparis:
+    get:
+      summary: Tüm siparişleri listele
+      tags: [Sipariş]
+      responses:
+        200:
+          description: Sipariş listesi başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Siparis'
+                  
+  # Add minimal tedarikci endpoints
+  /tedarikci:
+    get:
+      summary: Tüm tedarikçileri listele
+      tags: [Tedarikçi]
+      responses:
+        200:
+          description: Tedarikçi listesi başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tedarikci'
+
+# Define schemas directly in this file
 components:
   schemas:
+    # Firma schemas
     FirmaInput:
       type: object
       required:
@@ -182,7 +392,7 @@ components:
         email: info@ornekfirma.com
         yetkiliKisi: Ahmet Yılmaz
         aktif: true
-    
+
     Firma:
       allOf:
         - $ref: '#/components/schemas/FirmaInput'
@@ -203,3 +413,169 @@ components:
             id: abc123def456
             createdAt: 2023-05-15T10:30:00Z
             updatedAt: 2023-05-15T10:30:00Z
+            
+    # Personel schemas
+    PersonelInput:
+      type: object
+      required:
+        - ad
+        - soyad
+        - tcKimlik
+      properties:
+        ad:
+          type: string
+          description: Personelin adı
+        soyad:
+          type: string
+          description: Personelin soyadı
+        tcKimlik:
+          type: string
+          description: TC Kimlik numarası
+        telefon:
+          type: string
+          description: Telefon numarası
+        email:
+          type: string
+          format: email
+          description: E-posta adresi
+        departman:
+          type: string
+          description: Çalıştığı departman
+        pozisyon:
+          type: string
+          description: Görevi/pozisyonu
+        maas:
+          type: number
+          description: Maaş bilgisi
+        iseBaslamaTarihi:
+          type: string
+          format: date
+          description: İşe başlama tarihi
+        aktif:
+          type: boolean
+          description: Personelin aktif olup olmadığı
+        rolId:
+          type: string
+          description: Personelin rol ID'si
+
+    Personel:
+      allOf:
+        - $ref: '#/components/schemas/PersonelInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Personel ID
+            izinler:
+              type: array
+              items:
+                type: object
+                properties:
+                  baslangic:
+                    type: string
+                    format: date
+                  bitis:
+                    type: string
+                    format: date
+                  tur:
+                    type: string
+                    enum: [Yıllık, Hastalık, Ücretsiz, İdari]
+              description: İzin kayıtları
+            createdAt:
+              type: string
+              format: date-time
+              description: Oluşturulma tarihi
+            updatedAt:
+              type: string
+              format: date-time
+              description: Son güncelleme tarihi
+    
+    # Stok schemas
+    StokInput:
+      type: object
+      required:
+        - urunKodu
+        - urunAdi
+        - birimFiyat
+        - stokMiktari
+      properties:
+        urunKodu: 
+          type: string 
+          description: Ürün kodu
+        urunAdi: 
+          type: string 
+          description: Ürün adı
+        kategori: 
+          type: string
+          description: Ürün kategorisi
+        birim: 
+          type: string
+          description: Ölçü birimi
+        birimFiyat: 
+          type: number 
+          description: Birim fiyatı
+        stokMiktari: 
+          type: number 
+          description: Stok miktarı
+          
+    Stok:
+      allOf:
+        - $ref: '#/components/schemas/StokInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Stok ID'si
+              
+    # Siparis schemas
+    SiparisInput:
+      type: object
+      required:
+        - siparisNo
+        - firmaId
+        - siparisTarihi
+        - urunler
+        - toplamTutar
+      properties:
+        siparisNo:
+          type: string
+          description: Sipariş numarası
+        firmaId: 
+          type: string
+          description: Müşteri firma ID'si
+        siparisTarihi:
+          type: string
+          format: date
+          description: Sipariş tarihi
+    
+    Siparis:
+      allOf:
+        - $ref: '#/components/schemas/SiparisInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Sipariş ID'si
+              
+    # Tedarikci schemas
+    TedarikciInput:
+      type: object
+      required:
+        - firmaAdi
+        - vergiNo
+      properties:
+        firmaAdi: 
+          type: string 
+          description: Tedarikçi firma adı
+        vergiNo: 
+          type: string 
+          description: Vergi numarası
+    
+    Tedarikci:
+      allOf:
+        - $ref: '#/components/schemas/TedarikciInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Tedarikçi ID'si
