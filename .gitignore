@@ -134,3 +134,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore the actual service account key
+serviceAccountKey.json
+
+# Other common files to ignore
+.DS_Store

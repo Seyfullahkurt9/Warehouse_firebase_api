@@ -1,0 +1,10 @@
+{
+  "verbose": true,
+  "ignore": ["node_modules/*", ".git/*"],
+  "watch": ["src/*"],
+  "ext": "js,json",
+  "delay": "1000",
+  "execMap": {
+    "js": "node"
+  }
+}

@@ -1,5 +1,13 @@
 {
-  "description": "",
+  "name": "warehouse-management-system",
+  "version": "1.0.0",
+  "description": "A warehouse management system using Firebase Firestore",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon --inspect src/app.js",
+    "init": "node -e \"require('fs').mkdirSync('src/config', {recursive: true}); require('fs').mkdirSync('src/controllers', {recursive: true}); require('fs').mkdirSync('src/models', {recursive: true}); require('fs').mkdirSync('src/routes', {recursive: true});\""
+  },
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
