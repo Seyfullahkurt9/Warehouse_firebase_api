@@ -294,8 +294,7 @@ paths:
         500:
           description: Sunucu hatası
           
-  # Add similar patterns for stok, siparis, and tedarikci
-  # Add minimal stok endpoints
+  # Stok endpoints - Adding full CRUD operations
   /stok:
     get:
       summary: Tüm stokları listele
@@ -309,6 +308,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Stok'
+        500:
+          description: Sunucu hatası
     post:
       summary: Yeni ürün ekle
       tags: [Stok]
@@ -320,9 +321,116 @@ paths:
               $ref: '#/components/schemas/StokInput'
       responses:
         201:
-          description: Ürün başarıyla eklendi
+          description: Ürün başarıyla oluşturuldu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stok'
+        400:
+          description: Geçersiz veri
+        500:
+          description: Sunucu hatası
+  
+  /stok/{id}:
+    get:
+      summary: Ürün detaylarını getir
+      tags: [Stok]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Stok ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Ürün başarıyla alındı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stok'
+        404:
+          description: Ürün bulunamadı
+        500:
+          description: Sunucu hatası
+    put:
+      summary: Ürün bilgilerini güncelle
+      tags: [Stok]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Stok ID'si
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StokInput'
+      responses:
+        200:
+          description: Ürün başarıyla güncellendi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stok'
+        400:
+          description: Geçersiz veri
+        404:
+          description: Ürün bulunamadı
+        500:
+          description: Sunucu hatası
+    delete:
+      summary: Ürün kaydını sil
+      tags: [Stok]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Stok ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Ürün başarıyla silindi
+        404:
+          description: Ürün bulunamadı
+        500:
+          description: Sunucu hatası
+
+  /stok/search/{term}:
+    get:
+      summary: Ürün ara
+      tags: [Stok]
+      parameters:
+        - name: term
+          in: path
+          required: true
+          description: Arama terimi
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Maksimum sonuç sayısı
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Arama sonuçları başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Stok'
+        500:
+          description: Sunucu hatası
           
-  # Add minimal siparis endpoints      
+  # Siparis endpoints - Adding full CRUD operations
   /siparis:
     get:
       summary: Tüm siparişleri listele
@@ -336,8 +444,129 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Siparis'
-                  
-  # Add minimal tedarikci endpoints
+        500:
+          description: Sunucu hatası
+    post:
+      summary: Yeni sipariş ekle
+      tags: [Sipariş]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiparisInput'
+      responses:
+        201:
+          description: Sipariş başarıyla oluşturuldu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Siparis'
+        400:
+          description: Geçersiz veri
+        500:
+          description: Sunucu hatası
+          
+  /siparis/{id}:
+    get:
+      summary: Sipariş detaylarını getir
+      tags: [Sipariş]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sipariş ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Sipariş başarıyla alındı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Siparis'
+        404:
+          description: Sipariş bulunamadı
+        500:
+          description: Sunucu hatası
+    put:
+      summary: Sipariş bilgilerini güncelle
+      tags: [Sipariş]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sipariş ID'si
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiparisInput'
+      responses:
+        200:
+          description: Sipariş başarıyla güncellendi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Siparis'
+        400:
+          description: Geçersiz veri
+        404:
+          description: Sipariş bulunamadı
+        500:
+          description: Sunucu hatası
+    delete:
+      summary: Sipariş kaydını sil
+      tags: [Sipariş]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Sipariş ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Sipariş başarıyla silindi
+        404:
+          description: Sipariş bulunamadı
+        500:
+          description: Sunucu hatası
+          
+  /siparis/search/{term}:
+    get:
+      summary: Sipariş ara
+      tags: [Sipariş]
+      parameters:
+        - name: term
+          in: path
+          required: true
+          description: Arama terimi
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Maksimum sonuç sayısı
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Arama sonuçları başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Siparis'
+        500:
+          description: Sunucu hatası
+  
+  # Tedarikci endpoints - Adding full CRUD operations
   /tedarikci:
     get:
       summary: Tüm tedarikçileri listele
@@ -351,6 +580,127 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tedarikci'
+        500:
+          description: Sunucu hatası
+    post:
+      summary: Yeni tedarikçi ekle
+      tags: [Tedarikçi]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TedarikciInput'
+      responses:
+        201:
+          description: Tedarikçi başarıyla oluşturuldu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tedarikci'
+        400:
+          description: Geçersiz veri
+        500:
+          description: Sunucu hatası
+  
+  /tedarikci/{id}:
+    get:
+      summary: Tedarikçi detaylarını getir
+      tags: [Tedarikçi]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tedarikçi ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Tedarikçi başarıyla alındı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tedarikci'
+        404:
+          description: Tedarikçi bulunamadı
+        500:
+          description: Sunucu hatası
+    put:
+      summary: Tedarikçi bilgilerini güncelle
+      tags: [Tedarikçi]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tedarikçi ID'si
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TedarikciInput'
+      responses:
+        200:
+          description: Tedarikçi başarıyla güncellendi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tedarikci'
+        400:
+          description: Geçersiz veri
+        404:
+          description: Tedarikçi bulunamadı
+        500:
+          description: Sunucu hatası
+    delete:
+      summary: Tedarikçi kaydını sil
+      tags: [Tedarikçi]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Tedarikçi ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Tedarikçi başarıyla silindi
+        404:
+          description: Tedarikçi bulunamadı
+        500:
+          description: Sunucu hatası
+  
+  /tedarikci/search/{term}:
+    get:
+      summary: Tedarikçi ara
+      tags: [Tedarikçi]
+      parameters:
+        - name: term
+          in: path
+          required: true
+          description: Arama terimi
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Maksimum sonuç sayısı
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Arama sonuçları başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tedarikci'
+        500:
+          description: Sunucu hatası
 
 # Define schemas directly in this file
 components:
@@ -517,6 +867,21 @@ components:
         stokMiktari: 
           type: number 
           description: Stok miktarı
+        kritikStokSeviyesi:
+          type: number
+          description: Kritik stok seviyesi
+        resimUrl:
+          type: string
+          description: Ürün resim URL'i
+        tedarikciId:
+          type: string
+          description: Tedarikçi ID'si
+        rafYeri:
+          type: string
+          description: Raf/depo konumu
+        aktif:
+          type: boolean
+          description: Aktiflik durumu
           
     Stok:
       allOf:
@@ -547,6 +912,41 @@ components:
           type: string
           format: date
           description: Sipariş tarihi
+        teslimatTarihi:
+          type: string
+          format: date
+          description: Teslimat tarihi
+        durum:
+          type: string
+          enum: ['Beklemede', 'Hazırlanıyor', 'Kargoda', 'Teslim Edildi', 'İptal']
+          description: Sipariş durumu
+        urunler:
+          type: array
+          description: Sipariş edilen ürünler
+          items:
+            type: object
+            properties:
+              urunId:
+                type: string
+              miktar:
+                type: number
+              birimFiyat:
+                type: number
+              toplam:
+                type: number
+        toplamTutar:
+          type: number
+          description: Toplam sipariş tutarı
+        odemeDurumu:
+          type: string
+          enum: ['Ödenmedi', 'Kısmi Ödendi', 'Ödendi']
+          description: Ödeme durumu
+        odemeYontemi:
+          type: string
+          description: Ödeme yöntemi
+        notlar:
+          type: string
+          description: Sipariş notları
     
     Siparis:
       allOf:
@@ -570,6 +970,32 @@ components:
         vergiNo: 
           type: string 
           description: Vergi numarası
+        adres: 
+          type: string
+          description: Firma adresi
+        telefon: 
+          type: string
+          description: Telefon numarası 
+        email: 
+          type: string
+          description: E-posta adresi
+        yetkiliKisi: 
+          type: string
+          description: Yetkili kişi adı
+        urunKategorileri:
+          type: array
+          items:
+            type: string
+          description: Sağladığı ürün kategorileri
+        teslimatSuresi:
+          type: number
+          description: Ortalama teslimat süresi (gün)
+        notlar:
+          type: string
+          description: Tedarikçi hakkında notlar
+        aktif:
+          type: boolean
+          description: Aktiflik durumu
     
     Tedarikci:
       allOf:
