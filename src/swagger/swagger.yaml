@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: Depo Yönetim API
+  description: Depo Yönetim Sistemi için RESTful API
+  version: 1.0.0
+servers:
+  - url: /api
+    description: API ana URL'i
+paths:
+  /firma:
+    get:
+      summary: Tüm firmaları listele
+      tags: [Firma]
+      responses:
+        200:
+          description: Firma listesi başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Firma'
+        500:
+          description: Sunucu hatası
+    post:
+      summary: Yeni firma ekle
+      tags: [Firma]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmaInput'
+      responses:
+        201:
+          description: Firma başarıyla oluşturuldu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firma'
+        400:
+          description: Geçersiz veri
+        500:
+          description: Sunucu hatası
+  
+  /firma/{id}:
+    get:
+      summary: Firma detaylarını getir
+      tags: [Firma]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Firma ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Firma başarıyla alındı
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firma'
+        404:
+          description: Firma bulunamadı
+        500:
+          description: Sunucu hatası
+    
+    put:
+      summary: Firma bilgilerini güncelle
+      tags: [Firma]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Firma ID'si
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FirmaInput'
+      responses:
+        200:
+          description: Firma başarıyla güncellendi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Firma'
+        400:
+          description: Geçersiz veri
+        404:
+          description: Firma bulunamadı
+        500:
+          description: Sunucu hatası
+    
+    delete:
+      summary: Firma kaydını sil
+      tags: [Firma]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Firma ID'si
+          schema:
+            type: string
+      responses:
+        200:
+          description: Firma başarıyla silindi
+        404:
+          description: Firma bulunamadı
+        500:
+          description: Sunucu hatası
+  
+  /firma/search/{term}:
+    get:
+      summary: Firma ara
+      tags: [Firma]
+      parameters:
+        - name: term
+          in: path
+          required: true
+          description: Arama terimi
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Maksimum sonuç sayısı
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Arama sonuçları başarıyla alındı
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Firma'
+        500:
+          description: Sunucu hatası
+
+components:
+  schemas:
+    FirmaInput:
+      type: object
+      required:
+        - firmaAdi
+        - vergiNo
+      properties:
+        firmaAdi:
+          type: string
+          description: Firma adı
+        vergiNo:
+          type: string
+          description: Vergi numarası
+        adres:
+          type: string
+          description: Firma adresi
+        telefon:
+          type: string
+          description: Telefon numarası
+        email:
+          type: string
+          format: email
+          description: E-posta adresi
+        yetkiliKisi:
+          type: string
+          description: Yetkili kişi
+        aktif:
+          type: boolean
+          description: Firma aktif mi?
+      example:
+        firmaAdi: Örnek Firma Ltd. Şti.
+        vergiNo: 1234567890
+        adres: İstanbul, Türkiye
+        telefon: +90 212 123 45 67
+        email: info@ornekfirma.com
+        yetkiliKisi: Ahmet Yılmaz
+        aktif: true
+    
+    Firma:
+      allOf:
+        - $ref: '#/components/schemas/FirmaInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Firma ID'si
+            createdAt:
+              type: string
+              format: date-time
+              description: Oluşturulma tarihi
+            updatedAt:
+              type: string
+              format: date-time
+              description: Son güncelleme tarihi
+          example:
+            id: abc123def456
+            createdAt: 2023-05-15T10:30:00Z
+            updatedAt: 2023-05-15T10:30:00Z

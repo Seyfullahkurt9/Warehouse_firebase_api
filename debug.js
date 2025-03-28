@@ -105,4 +105,43 @@ try {
   console.log('❌ Error loading .env:', error.message);
 }
 
+require('dotenv').config();
+
+console.log('=== Firebase Configuration Debug ===');
+
+// Check if key environment variables are present
+const keysToCheck = [
+  'FIREBASE_PROJECT_ID',
+  'FIREBASE_PRIVATE_KEY_ID',
+  'FIREBASE_PRIVATE_KEY',
+  'FIREBASE_CLIENT_EMAIL'
+];
+
+for (const key of keysToCheck) {
+  console.log(`${key} exists: ${Boolean(process.env[key])}`);
+}
+
+// Check private key format
+if (process.env.FIREBASE_PRIVATE_KEY) {
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+  console.log('\nPrivate Key Analysis:');
+  console.log('- Length:', privateKey.length);
+  console.log('- Contains "BEGIN PRIVATE KEY":', privateKey.includes('BEGIN PRIVATE KEY'));
+  console.log('- Contains "END PRIVATE KEY":', privateKey.includes('END PRIVATE KEY'));
+  console.log('- Contains "\\n":', privateKey.includes('\\n'));
+  console.log('- First 20 chars:', privateKey.substring(0, 20) + '...');
+  console.log('- Last 20 chars:', '...' + privateKey.substring(privateKey.length - 20));
+}
+
+// Check if using service account file as fallback
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  console.log('\nUsing service account file:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
+}
+
+console.log('\nTo fix the private key format in your .env file:');
+console.log('1. Make sure the key is properly enclosed in quotes');
+console.log('2. Verify that all newlines are represented as \\n');
+console.log('3. The format should be: FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n"');
+console.log('4. Alternatively, use a service account JSON file and set GOOGLE_APPLICATION_CREDENTIALS=path/to/file.json');
+
 console.log('\nDebug complete. Check the log above for any missing items.');
