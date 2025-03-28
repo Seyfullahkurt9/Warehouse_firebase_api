@@ -138,5 +138,8 @@ dist
 # Ignore the actual service account key
 serviceAccountKey.json
 
+# Uploaded files
+public/uploads/
+
 # Other common files to ignore
 .DS_Store

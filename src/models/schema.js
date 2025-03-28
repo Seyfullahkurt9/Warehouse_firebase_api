@@ -18,7 +18,15 @@ const collections = {
       'personel_telefon_no', 
       'personel_eposta_adresi', 
       'personel_sifre', 
-      'firma_firma_id'
+      'firma_firma_id',
+      'rol' // Rol bilgisi ekledik
+    ]
+  },
+  roller: {
+    fields: [
+      'rol_id',
+      'rol_adi',
+      'yetkiler' // Array olarak yetkileri tutacak
     ]
   },
   tedarikci: {
@@ -38,7 +46,8 @@ const collections = {
       'urun_adi', 
       'urun_miktari', 
       'tedarikci_tedarikci_id', 
-      'personel_personel_id'
+      'personel_personel_id',
+      'durum'
     ]
   },
   stok: {
@@ -47,7 +56,10 @@ const collections = {
       'stok_giris_tarihi', 
       'stok_cikis_tarihi', 
       'stok_miktari', 
-      'siparis_siparis_id'
+      'siparis_siparis_id',
+      'urun_kodu',
+      'urun_adi',
+      'aciklama'
     ]
   }
 };

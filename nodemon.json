@@ -3,7 +3,7 @@
   "ignore": ["node_modules/*", ".git/*"],
   "watch": ["src/*"],
   "ext": "js,json",
-  "delay": "1000",
+  "delay": 2500,
   "execMap": {
     "js": "node"
   }

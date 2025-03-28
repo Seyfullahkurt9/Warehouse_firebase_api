@@ -5,14 +5,20 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon --inspect src/app.js",
-    "init": "node -e \"require('fs').mkdirSync('src/config', {recursive: true}); require('fs').mkdirSync('src/controllers', {recursive: true}); require('fs').mkdirSync('src/models', {recursive: true}); require('fs').mkdirSync('src/routes', {recursive: true});\""
+    "debug": "node debug.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/app.js --inspect",
+    "init": "node -e \"require('fs').mkdirSync('src/config', {recursive: true}); require('fs').mkdirSync('src/controllers', {recursive: true}); require('fs').mkdirSync('src/models', {recursive: true}); require('fs').mkdirSync('src/routes', {recursive: true}); require('fs').mkdirSync('src/services', {recursive: true}); require('fs').mkdirSync('src/middleware', {recursive: true}); require('fs').mkdirSync('src/utils', {recursive: true});\""
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase-admin": "^13.2.0",
-    "mysql2": "^3.14.0"
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
